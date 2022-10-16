@@ -1,0 +1,51 @@
+@import "../../../styles/global";
+
+.newProject {
+  padding: 0 1rem;
+  &-form {
+    form {
+      label,
+      input {
+        display: block;
+        margin: 0 auto;
+      }
+      label {
+        margin-bottom: 1rem;
+        font-size: 2.5rem;
+        font-weight: 500;
+        text-align: center;
+        letter-spacing: 0.05rem;
+      }
+      input {
+        width: 22.5%;
+        padding: 1rem 1rem 1rem 2rem;
+        margin-bottom: 1.5rem;
+        background-color: #eff0f2;
+        font: inherit;
+        font-size: 1.8rem;
+        min-width: 30rem;
+        border: none;
+        outline: none;
+        &::placeholder {
+          color: #838383;
+        }
+      }
+    }
+    &-submitBtn {
+      display: block;
+      margin: 4rem auto 10rem;
+      width: 22%;
+      min-width: 30rem;
+      padding: 1.5rem 1rem;
+      font-size: 2rem;
+      font-weight: 600;
+      color: $white;
+      background: $blue;
+      border: none;
+      outline: none;
+      border-radius: 0.5rem;
+      letter-spacing: 0.1rem;
+      cursor: pointer;
+    }
+  }
+}

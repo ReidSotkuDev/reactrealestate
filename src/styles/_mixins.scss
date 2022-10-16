@@ -1,0 +1,29 @@
+// mixinx for breakpoints
+
+$breakpoints-up: (
+  "desktop": "1200px",
+  "smallDesktop": " 991px",
+  "tablet": " 768px",
+  "mobile": " 540px",
+  "tiny": " 320px",
+);
+
+$breakpoints-down: (
+  "desktop": "1200px",
+  "smallDesktop": " 991px",
+  "tablet": " 768px",
+  "mobile": " 540px",
+  "tiny": " 320px",
+);
+
+@mixin breakpoint-up($size) {
+  @media (min-width: map-get($breakpoints-up,$size)) {
+    @content;
+  }
+}
+
+@mixin breakpoint-down($size) {
+  @media (max-width: map-get($breakpoints-down,$size)) {
+    @content;
+  }
+}

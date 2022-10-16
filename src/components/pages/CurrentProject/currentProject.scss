@@ -1,0 +1,147 @@
+@import "../../../styles/global";
+
+.currentProject {
+  &-searchBar {
+    > div {
+      width: max-content;
+      display: block;
+      margin: 0 auto;
+      position: relative;
+      i {
+        position: absolute;
+        left: 1.2rem;
+        top: 1rem;
+        font-size: 2rem;
+      }
+    }
+    input {
+      padding: 1rem 1rem 1rem 3.8rem;
+      font-size: 1.8rem;
+      border: none;
+      outline: none;
+    }
+  }
+  &-tiles {
+    margin: 4rem 0;
+  }
+  &-tile {
+    cursor: pointer;
+    margin: 0 auto;
+    padding: 2rem;
+    max-width: 60rem;
+    background: $white;
+    border-radius: 1.5rem;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+    // > .tile-item {
+    //   flex: 1;
+    // }
+    &-ps {
+      flex: 1;
+      font-size: 2.5rem;
+      font-weight: 600;
+      text-align: center;
+      line-height: 5.5rem;
+    }
+    &-name {
+      flex: 2;
+      font-size: 2.2rem;
+      font-weight: 500;
+    }
+    &-officerName {
+      font-size: 1.5rem;
+      color: #2b2c2c;
+      margin-left: 1.5rem;
+    }
+  }
+}
+
+.selectedProject {
+  position: relative;
+  &-back {
+    width: fit-content;
+    font-size: 5rem;
+    position: absolute;
+    top: 0;
+    left: 3rem;
+    cursor: pointer;
+  }
+  &-header {
+    h2 {
+      text-align: center;
+      text-transform: uppercase;
+      font-weight: 500;
+      font-size: 2rem;
+      margin: 1rem 0;
+      letter-spacing: 0.1rem;
+    }
+  }
+  &-tiles {
+    margin: 4rem 0;
+  }
+  &-tile {
+    margin: 0 auto;
+    padding: 2rem;
+    max-width: 50rem;
+    background: $white;
+    border-radius: 1.5rem;
+    font-size: 2rem;
+    margin-bottom: 3rem;
+
+    &-date {
+      font-size: 1.8rem;
+      font-weight: 500;
+    }
+
+    &-name {
+      flex: 5;
+      padding: 0 5rem;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.1rem;
+      font-weight: 500;
+    }
+    &-imageBox {
+      // flex: 1;
+      width: 10rem;
+      img {
+        width: 100%;
+      }
+    }
+  }
+  &-details {
+    text-align: center;
+    > div {
+      h1 {
+        font-size: 3rem;
+        font-weight: 500;
+        &:first-child {
+          color: rgba(0, 0, 0, 0.8);
+        }
+        &:last-child {
+          font-weight: 600;
+          margin: 0 0 2rem 0;
+        }
+      }
+    }
+  }
+  &-archiveBtn {
+    cursor: pointer;
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 1.5rem 2.5rem;
+    font-size: 2.1rem;
+    font-weight: 500;
+    color: $white;
+    background-color: #fb0808;
+    border-radius: 5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1rem;
+  }
+}
+
+.textcenter{
+  text-align: center;
+}
+

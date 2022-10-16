@@ -1,0 +1,56 @@
+@import "../../../styles/global";
+
+.milestone,
+.milestoneValue {
+  &-selectors {
+    max-width: 110rem;
+    margin: 0 auto;
+
+    &-selectAll,
+    &-selectIndividual {
+      input {
+        width: 3rem;
+        height: 3rem;
+      }
+      label {
+        flex: 1;
+        margin: 0 1.5rem;
+        font-size: 2.5rem;
+        font-weight: 500;
+      }
+    }
+    &-selectIndividual {
+      width: 100%;
+      margin-top: 3rem;
+    }
+    &-submitBtn {
+      display: block;
+      margin: 4rem auto;
+      width: 22%;
+      min-width: 30rem;
+      padding: 1.5rem 1rem;
+      font-size: 2rem;
+      font-weight: 600;
+      color: $white;
+      background: $blue;
+      border: none;
+      outline: none;
+      border-radius: 0.5rem;
+      letter-spacing: 0.1rem;
+      cursor: pointer;
+    }
+  }
+  &-total {
+    margin: 1.5rem 0 0 0;
+    h1,
+    h2 {
+      text-align: center;
+      color: #000000b2;
+      font-size: 2.2rem;
+      font-weight: 500;
+    }
+    h2 {
+      color: $black;
+    }
+  }
+}
