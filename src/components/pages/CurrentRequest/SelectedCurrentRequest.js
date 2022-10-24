@@ -29,9 +29,6 @@ const SelectedCurrentRequest = ({
     console.log(showmilestones)
     setMilestonesList(showmilestones)
   }
-  const gotoMileStone = () => {
-    ; 
-  }
   useEffect(() => {
     getCurrentRequests()
   }, []);

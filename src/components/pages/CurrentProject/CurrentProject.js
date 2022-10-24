@@ -3,8 +3,7 @@ import { Link } from "react-router-dom";
 import homePNG from "../../../assets/images/home.png";
 import "./currentProject.scss";
 import SelectedProject from "./SelectedProject";
-import { db } from '../../firebase/firebase-config'
-import {collection, getDocs, query } from 'firebase/firestore';
+import {getCollectiondata} from '../../../utilities/firebase-functions'
 
 
 
@@ -19,74 +18,40 @@ const CurrentProject = () => {
   const [selectedProjectView, setSelectedProjectView] = useState(false);
   const [selectedProjectData, setSelectedProjectData] = useState(null);
   const [currentProject, setcurrentProject] = useState([]);
+  const [showLoader, setshowLoader] = useState(false);
   const getCurrentProjects = async () => {
 
 
+    setshowLoader(true);
     let currentUser = JSON.parse(localStorage.getItem("user-auth"))
-    let currentProjectArr = [];
-    let milestones = [];
+    let currentUserDoc = JSON.parse(localStorage.getItem("currentuser"))
+    let projectInfo = []
 
-    const q = query(collection(db, "918bank"))
-    const snapshot = await getDocs(q)
-    const data = snapshot.docs.map((doc) => ({
-      ...doc.data(), id: doc.id
-    }))
-    data.map(async (elem) => {
-      const workQ = query(collection(db, `918bank/${elem.id}/Loan Officers/${currentUser.user.uid}/LOusers`))
-      const workDetails = await getDocs(workQ)
-      const workInfo = workDetails.docs.map((doc) => ({
-        ...doc.data(), id: doc.id
-      }))
 
-      workInfo.map(async (louserele) => {
-
-        let username = "";
-        const workQ = query(collection(db, `918bank/${elem.id}/Loan Officers/${currentUser.user.uid}/LOusers/${louserele.id}/Project Information`))
-        const workDetails = await getDocs(workQ)
-        if (!workDetails.empty) {
-          workDetails.docs.forEach(d => {
-            if (d.data()) {
-
-              console.log("-------------", d.data())
+    let bankData = await getCollectiondata(currentUserDoc.companyName)
+    let usersData = await getCollectiondata(`${currentUserDoc.companyName}/${bankData[0].id}/Loan Officers/${currentUser.user.uid}/LOusers`)
+    for (let index = 0; index < usersData.length; index++) {
+      const user = usersData[index];
+      projectInfo = [];
+      let projectInfodata = await getCollectiondata(`${currentUserDoc.companyName}/${bankData[0].id}/Loan Officers/${currentUser.user.uid}/LOusers/${user.id}/Project Information`)
+      for (let j = 0; j < projectInfodata.length; j++) {
+        const project = projectInfodata[j];
+        if (project.currentrequest) {
+          let url = `${currentUserDoc.companyName}/${bankData[0].id}/Loan Officers/${currentUser.user.uid}/LOusers/${user.id}/Project Information/${project.address}/Milestone`
+          let milestones = await getCollectiondata(url)
+          for (let index = 0; index < milestones.length; index++) {
+            const milestone = milestones[index];
+            if (!milestone.activerequest  && (!milestone.hasOwnProperty('isArchived') || !milestone.isArchived)) {
+              projectInfo.push({ totalloanamount:project.totalloanamount,"percentage": project.projectcomplete, "projectName": project.address, officerName: user.firstName + user.lastName , userId : user.id , bank:bankData[0].id });
+              break;
             }
-          });
-          let workInfo = workDetails.docs.map((doc) => ({
-            ...doc.data(), id: doc.id
-          }))
-          console.log(workInfo)
-
-          workInfo.map(async (project) => {
-            let workQ = query(collection(db, `918bank/${elem.id}/Loan Officers/${currentUser.user.uid}/LOusers/${louserele.id}/Project Information/${project.id}/Milestone`))
-            let workDetails = await getDocs(workQ)
-           
-            workDetails.docs.forEach(d => {
-              if (d.data()) {
-
-                console.log("------------- milestones", d.data())
-                if(d.data().activerequest){
-                  milestones.push({ 'image': d.data().image , milestonevalue : d.data().milestonevalue , milestonename:d.data().milestonename })
-                }
-              }
-            });
-          })
-
-          console.log("milestones---------"  , milestones)
-          workInfo.forEach(ele => {
-            if(ele.currentrequest){
-              console.log('found' , ele)
-              debugger
-              currentProjectArr.push({'officerName':workInfo[0].loanofficer , "projectName" : ele.address , percentage:ele.projectcomplete , milestones:milestones})
-            }
-          });
+          }
+          
         }
-
-        console.log(currentProjectArr)
-        setcurrentProject(currentProjectArr);
-
-        // setWorkData(workInfo);
-      })
-    })
-
+      }
+    }
+    setcurrentProject(projectInfo)
+    setshowLoader(false)
 
 
 
@@ -130,9 +95,13 @@ const CurrentProject = () => {
         <div className="currentProject-tiles">
 
 
-          {currentProject.length == 0 ? <div className="row textcenter">
-            <h3><i>... Loding Projects ...</i></h3>
+        {showLoader ? <div className="row textcenter">
+            <h3><i>... Loding Current Projects ...</i></h3>
           </div> : null}
+
+          {!showLoader && currentProject.length == 0 ? <div className="row textcenter">
+            <h3><i> No Current Projects Found</i></h3>
+          </div>:null}
           {currentProject.map((project, idx) => {
             return (
               <div

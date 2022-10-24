@@ -21,8 +21,8 @@ const Recap = ({ }) => {
     const submitfund = () => {
         debugger
         let state = location.state;
-        if(state.projectData.totalloanamount <= amountFunnded || amountFunnded == 0){
-            alert("funded amount sholud be less than Total Loan amount")
+        if(state.data.milestonevalue < amountFunnded || amountFunnded == 0){
+            alert("funded amount sholud be less than Requested Draw")
             return 
         }
         state.data.fundedamount = amountFunnded;
@@ -95,7 +95,7 @@ const Recap = ({ }) => {
                     <h2>
                         Complete
                         <br />
-                        <span className="currency-text">$100,00</span>
+                        <span className="currency-text">{location.state.projectData.percentage} %</span>
                     </h2>
 
 
@@ -113,7 +113,7 @@ const Recap = ({ }) => {
                     <h2>
                         Requested Draw
                         <br />
-                        <span className="currency-text">$100,00</span>
+                        <span className="currency-text">${location.state.data.milestonevalue}</span>
                     </h2>
 
 
