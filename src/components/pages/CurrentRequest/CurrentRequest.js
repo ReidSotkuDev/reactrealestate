@@ -61,9 +61,9 @@ const CurrentRequest = () => {
         </div>
       </div>
       <div className="currentProject-tiles">
-      {showLoader ? <div className="row textcenter">
-            <h3><i>... Loding Current Requests ...</i></h3>
-          </div> : null}
+        {showLoader ? <div className="row textcenter">
+          <h3><i>... Loding Current Requests ...</i></h3>
+        </div> : null}
         {!showLoader && currentRequestList.length == 0 ? <div className="row textcenter">
           <h3><i>No Loding Requests Found</i></h3>
         </div> : null}

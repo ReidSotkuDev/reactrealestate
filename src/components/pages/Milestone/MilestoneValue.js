@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import homePNG from "../../../assets/images/home.png";
 import "./milestone.scss";
+import { useLocation } from 'react-router-dom';
+import { updateDocumnet, getCollectiondata, addCollection, updateAddDocument } from "../../../utilities/firebase-functions";
+import { useNavigate } from "react-router-dom";
 
 const MilestoneValue = ({ selectedSelectors }) => {
+  let navigate = useNavigate();
+  const location = useLocation();
   const [totalValue, setTotalValue] = useState(0);
   const [selectedSelectorsWithValue, setSelectedSelectorsWithValue] =
     useState(selectedSelectors);
+  let selectedSelectorsWithValues =
+    useRef(selectedSelectors);
 
   useEffect(() => {
     calculateTotalValue(selectedSelectorsWithValue);
@@ -23,6 +30,7 @@ const MilestoneValue = ({ selectedSelectors }) => {
   };
 
   const updateValueForSelectedSelector = (event, selector) => {
+    debugger
     const updatedSelectors = selectedSelectorsWithValue.map((s) => {
       if (s.id === selector.id) {
         return { ...s, value: Number(event.target.value) };
@@ -30,8 +38,68 @@ const MilestoneValue = ({ selectedSelectors }) => {
         return { ...s };
       }
     });
+    selectedSelectorsWithValues.current = updatedSelectors
     setSelectedSelectorsWithValue(updatedSelectors);
   };
+
+  const submitProject = async (event) => {
+
+    event.preventDefault()
+    if(totalValue != 100){
+      alert("Value must be equal to 100")
+      return;
+    }
+    let currentUser = JSON.parse(localStorage.getItem("user-auth"))
+    let currentUserDoc = JSON.parse(localStorage.getItem("currentuser"))
+    let bankData = await getCollectiondata(currentUserDoc.companyName)
+    let url = `${currentUserDoc.companyName}/${bankData[0].id}/Loan Officers/${currentUser.user.uid}/LOusers`;
+    let data =
+    {
+      bankuid: currentUserDoc.bankuid,
+      companyName: currentUserDoc.companyName,
+      email: currentUserDoc.email,
+      firstName: currentUserDoc.firstName,
+      lastName: currentUserDoc.lastName,
+      password: currentUserDoc.password,
+      role: currentUserDoc.role,
+    }
+
+    let collectionData = {
+      address: location.state.values.address,
+      amountRequested : "",
+      clientuid:location.state.values.clientuuid,
+      contactinformation:location.state.values.contactinformation,
+      currentrequest:true,
+      isprojectcomplete:false,
+      loanofficer:"",
+      projectcomplete:"",
+      totalloanamount:location.state.values.totalloanamount
+    }
+    await updateDocumnet(url, location.state.values.clientuuid, data)
+    url = url + `/${location.state.values.clientuuid}/Project Information`;
+    await updateAddDocument(url, location.state.values.address, collectionData)
+    url = url + `/${location.state.values.address}/MileStone`
+    selectedSelectorsWithValues.current.forEach(async (milestone) => {
+      let milestoneData = {
+        activeRequest: false,
+        description: "",
+        fundedAmount: "",
+        image: "",
+        isArchieved: false,
+        milestonecomplete: false,
+        milestonename: milestone.name,
+        milestonevalue: milestone.value
+      }
+      await updateAddDocument(url, milestone.name, milestoneData)
+    });
+
+    navigate('/home')
+    
+    console.log('updatedSelectors', selectedSelectorsWithValues)
+
+
+
+  }
 
   return (
     <section className="milestoneValue">
@@ -80,12 +148,12 @@ const MilestoneValue = ({ selectedSelectors }) => {
             <hr style={{ margin: "1rem 0" }} />
             <h2>{totalValue}</h2>
           </div>
-          <button
+          <button onClick={submitProject}
             className="milestone-selectors-submitBtn"
-            //   onClick={(event) => {
-            //     event.preventDefault();
-            //     setMilestoneValueView(true);
-            //   }}
+          //   onClick={(event) => {
+          //     event.preventDefault();
+          //     setMilestoneValueView(true);
+          //   }}
           >
             SUBMIT
           </button>

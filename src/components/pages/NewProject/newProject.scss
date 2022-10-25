@@ -9,6 +9,10 @@
         display: block;
         margin: 0 auto;
       }
+      select{
+        display: block;
+        margin: 0 auto;
+      }
       label {
         margin-bottom: 1rem;
         font-size: 2.5rem;
@@ -17,6 +21,20 @@
         letter-spacing: 0.05rem;
       }
       input {
+        width: 22.5%;
+        padding: 1rem 1rem 1rem 2rem;
+        margin-bottom: 1.5rem;
+        background-color: #eff0f2;
+        font: inherit;
+        font-size: 1.8rem;
+        min-width: 30rem;
+        border: none;
+        outline: none;
+        &::placeholder {
+          color: #838383;
+        }
+      }
+      select{
         width: 22.5%;
         padding: 1rem 1rem 1rem 2rem;
         margin-bottom: 1.5rem;

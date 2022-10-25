@@ -3,8 +3,13 @@ import { Link } from "react-router-dom";
 import homePNG from "../../../assets/images/home.png";
 import "./milestone.scss";
 import MilestoneValue from "./MilestoneValue";
+import { useLocation } from 'react-router-dom';
 
-const Milestone = () => {
+const Milestone = ({
+  projectData
+}) => {
+  const location = useLocation();
+  console.log("projectData",location.state)
   const [milestoneValueView, setMilestoneValueView] = useState(false);
   const [selectAll, setSelectAll] = useState("");
   const defineSelectors = [
@@ -198,7 +203,17 @@ const Milestone = () => {
               className="milestone-selectors-submitBtn"
               onClick={(event) => {
                 event.preventDefault();
-                setMilestoneValueView(true);
+                {
+                  debugger
+                  if (selectedSelectors.length > 0) {
+                    setMilestoneValueView(true)
+                  }
+                  else {
+                    alert("Please Select One Milestone ")
+                  }
+                }
+
+
               }}
             >
               SUBMIT

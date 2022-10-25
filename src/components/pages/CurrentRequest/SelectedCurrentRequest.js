@@ -11,10 +11,11 @@ const SelectedCurrentRequest = ({
   let showmilestones = [];
   const [milestonesList, setMilestonesList] = useState([]);
   const [setSelectedMileStoneData, setsetSelectedMileStoneData] = useState(null);
-
+  let currentUserDoc = JSON.parse(localStorage.getItem("currentuser"))
   const getCurrentRequests = async () => {
     let currentUser = JSON.parse(localStorage.getItem("user-auth"))
-    let url = `918bank/${selectedCurrentRequest.bank}/Loan Officers/${currentUser.user.uid}/LOusers/${selectedCurrentRequest.userId}/Project Information/${selectedCurrentRequest.projectName}/Milestone`
+    let bankData = await getCollectiondata(currentUserDoc.companyName)
+    let url = `${currentUserDoc.companyName}/${bankData[0].id}/Loan Officers/${currentUser.user.uid}/LOusers/${selectedCurrentRequest.userId}/Project Information/${selectedCurrentRequest.projectName}/Milestone`
     let milestones = await getCollectiondata(url)
     milestones.forEach(milestone => {
       if (milestone.activerequest) {

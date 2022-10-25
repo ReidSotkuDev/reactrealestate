@@ -14,10 +14,11 @@ const SelectedProject = ({
   let navigate = useNavigate();
   let showmilestones = [];
   let currentUser = JSON.parse(localStorage.getItem("user-auth"))
+  let currentUserDoc = JSON.parse(localStorage.getItem("currentuser"))
   const getCurrentProjects = async () => {
     
-    
-    let url = `918bank/${selectedProjectData.bank}/Loan Officers/${currentUser.user.uid}/LOusers/${selectedProjectData.userId}/Project Information/${selectedProjectData.projectName}/Milestone`
+    let bankData = await getCollectiondata(currentUserDoc.companyName)
+    let url = `${currentUserDoc.companyName}/${bankData[0].id}/Loan Officers/${currentUser.user.uid}/LOusers/${selectedProjectData.userId}/Project Information/${selectedProjectData.projectName}/Milestone`
     let milestones = await getCollectiondata(url)
     let totalMileStoneValue = 0;
     milestones.forEach(milestone => {
@@ -50,8 +51,9 @@ const SelectedProject = ({
       }
     });
   }
-  const sendtoArchive = () => {
-    let url = `918bank/${selectedProjectData.bank}/Loan Officers/${currentUser.user.uid}/LOusers/${selectedProjectData.userId}/Project Information/${selectedProjectData.projectName}/Milestone`
+  const sendtoArchive = async () => {
+    let bankData = await getCollectiondata(currentUserDoc.companyName)
+    let url = `${currentUserDoc.companyName}/${bankData[0].id}Loan Officers/${currentUser.user.uid}/LOusers/${selectedProjectData.userId}/Project Information/${selectedProjectData.projectName}/Milestone`
     completedMilestonesList.forEach(async milestone => {
       await updateDocumnet(url , milestone.name , {isArchived:true})
     });

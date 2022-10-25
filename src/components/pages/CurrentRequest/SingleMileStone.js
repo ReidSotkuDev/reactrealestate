@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import "./currentRequest.scss";
 import { useLocation } from 'react-router-dom';
-import { updateDocumnet, getDocsdata } from '../../../utilities/firebase-functions'
+import { updateDocumnet, getDocsdata ,getCollectiondata } from '../../../utilities/firebase-functions'
 import SelectedCurrentRequest from "./SelectedCurrentRequest";
 var Carousel = require('react-responsive-carousel').Carousel;
 
@@ -21,7 +21,9 @@ const SingleMileStone = ({ }) => {
     const getmilestone = async () => {
         debugger
         let currentUser = JSON.parse(localStorage.getItem("user-auth"))
-        let url = `918bank/${location.state.data.bank}/Loan Officers/${currentUser.user.uid}/LOusers/${location.state.data.userId}/Project Information/${location.state.data.projectName}/Milestone`;
+        let currentUserDoc = JSON.parse(localStorage.getItem("currentuser"))
+        let bankData = await getCollectiondata(currentUserDoc.companyName)
+        let url = `${currentUserDoc.companyName}/${bankData[0].id}/Loan Officers/${currentUser.user.uid}/LOusers/${location.state.data.userId}/Project Information/${location.state.data.projectName}/Milestone`;
         seturl(url)
         let milestone = await getDocsdata(url, location.state.milestonename)
         setmilestone(milestone)

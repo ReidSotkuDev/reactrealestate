@@ -1,5 +1,5 @@
 import { db } from '../components/firebase/firebase-config'
-import { collection, doc, getDocs, query , getDoc , updateDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, query , getDoc , updateDoc, addDoc, setDoc  } from 'firebase/firestore';
 const getCollectiondata = async (url) => {
     let collectonData = query(collection(db, url))
     let docsData = await getDocs(collectonData)
@@ -21,4 +21,13 @@ const getCollectiondata = async (url) => {
     const result = updateDocres
     return result
   }
-  export {getCollectiondata , getDocsdata , updateDocumnet} 
+
+  const updateAddDocument = async (url , docid , data) => {
+    let docRef = doc(db, url , docid)
+    let updateDocres = await setDoc(docRef , data , {merge:true})
+    const result = updateDocres
+    return result
+  }
+
+  
+  export {getCollectiondata , getDocsdata , updateDocumnet , updateAddDocument} 
