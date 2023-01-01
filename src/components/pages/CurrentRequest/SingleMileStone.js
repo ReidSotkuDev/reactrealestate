@@ -19,7 +19,7 @@ const SingleMileStone = ({ }) => {
 
     //functions
     const getmilestone = async () => {
-        debugger
+        
         let currentUser = JSON.parse(localStorage.getItem("user-auth"))
         let currentUserDoc = JSON.parse(localStorage.getItem("currentuser"))
         let bankData = await getCollectiondata(currentUserDoc.companyName)
@@ -55,7 +55,7 @@ const SingleMileStone = ({ }) => {
 
     //on Load
     useEffect(() => {
-        debugger
+        
         getmilestone()
     }, []);
 

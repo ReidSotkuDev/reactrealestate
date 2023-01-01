@@ -29,11 +29,11 @@ const Login = () => {
           credsForLogin.password
         );
         if (user) {
-          debugger
+          
           console.log("user",user);
           setErrorMsg(null);
           
-         debugger
+         
           let currentUser = await getDocsdata('userCreationRequests',user.user.uid)
           localStorage.setItem("user-auth", JSON.stringify(user));
           localStorage.setItem("currentuser", JSON.stringify(currentUser));

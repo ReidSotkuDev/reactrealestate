@@ -204,7 +204,7 @@ const Milestone = ({
               onClick={(event) => {
                 event.preventDefault();
                 {
-                  debugger
+                  
                   if (selectedSelectors.length > 0) {
                     setMilestoneValueView(true)
                   }

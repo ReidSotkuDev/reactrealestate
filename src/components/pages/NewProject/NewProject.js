@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import homePNG from "../../../assets/images/home.png";
 import "./newProject.scss";
-import { projectStore } from '../../../utilities/store'
 import { getCollectiondata } from '../../../utilities/firebase-functions'
 import { useNavigate } from "react-router-dom";
 
@@ -41,7 +40,7 @@ const NewProject = () => {
     }
     clientInfo.current = clientInfoarr;
     setOptions(clientInfoarr)
-    debugger
+    
     setValues({
       address: "",
       clientuuid: clientInfo.current[0].value,
@@ -54,7 +53,7 @@ const NewProject = () => {
 
   const handleselectChange = (name) => {
     return ({ target: { value } }) => {
-      debugger
+      
       //let selectedoption = clientInfo.current.filter(c => c.value == value)
       // let loanofficeruid = selectedoption[0].loanofficeruid;
       setValues((oldValues) => ({ ...oldValues, [name]: value }));

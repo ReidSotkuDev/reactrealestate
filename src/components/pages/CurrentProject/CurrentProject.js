@@ -112,7 +112,7 @@ const CurrentProject = () => {
                 }}
               >
                 <div className="currentProject-tile-ps tile-item">
-                  {project.percentage}
+                  {project.percentage == "" ? 0 : project.percentage}
                 </div>
                 <div className="currentProject-tile-name tile-item">
                   {project.projectName}

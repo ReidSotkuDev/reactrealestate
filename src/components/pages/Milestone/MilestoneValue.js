@@ -30,7 +30,7 @@ const MilestoneValue = ({ selectedSelectors }) => {
   };
 
   const updateValueForSelectedSelector = (event, selector) => {
-    debugger
+    
     const updatedSelectors = selectedSelectorsWithValue.map((s) => {
       if (s.id === selector.id) {
         return { ...s, value: Number(event.target.value) };
@@ -78,10 +78,10 @@ const MilestoneValue = ({ selectedSelectors }) => {
     await updateDocumnet(url, location.state.values.clientuuid, data)
     url = url + `/${location.state.values.clientuuid}/Project Information`;
     await updateAddDocument(url, location.state.values.address, collectionData)
-    url = url + `/${location.state.values.address}/MileStone`
+    url = url + `/${location.state.values.address}/Milestone`
     selectedSelectorsWithValues.current.forEach(async (milestone) => {
       let milestoneData = {
-        activeRequest: false,
+        activerequest: false,
         description: "",
         fundedAmount: "",
         image: "",

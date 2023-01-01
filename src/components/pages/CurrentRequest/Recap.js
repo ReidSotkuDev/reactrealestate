@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
+// import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import "./currentRequest.scss";
 import { Navigate, useLocation } from 'react-router-dom';
 import { updateDocumnet, getDocsdata } from '../../../utilities/firebase-functions'
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 const Recap = ({ }) => {
     const location = useLocation();
     const navigate = useNavigate();
-    debugger
+    
     console.log('location.state', location.state)
 
     //declarations
@@ -19,7 +19,7 @@ const Recap = ({ }) => {
     //functions
 
     const submitfund = () => {
-        debugger
+        
         let state = location.state;
         if(state.data.milestonevalue < amountFunnded || amountFunnded == 0){
             alert("funded amount sholud be less than Requested Draw")
@@ -93,9 +93,9 @@ const Recap = ({ }) => {
                         }}
                     />
                     <h2>
-                        Complete
+                        Completed
                         <br />
-                        <span className="currency-text">{location.state.projectData.percentage} %</span>
+                        <span className="currency-text">{location.state.projectData.percentage == "" ? "0" : location.state.projectData.percentage} %</span>
                     </h2>
 
 
@@ -113,7 +113,7 @@ const Recap = ({ }) => {
                     <h2>
                         Requested Draw
                         <br />
-                        <span className="currency-text">${location.state.data.milestonevalue}</span>
+                        <span className="currency-text">${location.state.data.amountRequested}</span>
                     </h2>
 
 

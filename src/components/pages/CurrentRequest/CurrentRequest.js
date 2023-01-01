@@ -44,6 +44,7 @@ const CurrentRequest = () => {
 
         }
       }
+      console.log('data----' , projectInfo)
     }
     setCurrentRequestList(projectInfo)
     setshowLoader(false)
@@ -65,7 +66,7 @@ const CurrentRequest = () => {
           <h3><i>... Loding Current Requests ...</i></h3>
         </div> : null}
         {!showLoader && currentRequestList.length == 0 ? <div className="row textcenter">
-          <h3><i>No Loding Requests Found</i></h3>
+          <h3><i>No  Requests Found</i></h3>
         </div> : null}
         {currentRequestList.map((project, idx) => {
           return (

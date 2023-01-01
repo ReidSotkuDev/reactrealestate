@@ -2,30 +2,37 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import homePNG from "../../../assets/images/home.png";
 import "./archiveProject.scss";
+import SelectedArchievedProject from "./SelectedArchive";
 import {getCollectiondata} from '../../../utilities/firebase-functions'
-// import {SelectedArchived} from '../ArchiveProject/SelectedArchive'
-const ArchiveProject = () => {
+
+
+
+
+const ArchivedProject = () => {
+
+
   useEffect(() => {
 
-    getArchivedProjects()
+    getCurrentProjects()
   }, []);
-  const [SelectedArchivedView, setSelectedArchivedView] = useState(false);
-  const [selectedProjectData, setSelectedProjectData] = useState(null);
-  const [archivedProject, setarchivedProject] = useState([]);
+  const [selectedArchivedView, setSelectedArcivedView] = useState(false);
+  const [selectedArchivedData, setSelectedArchivedData] = useState(null);
+  const [currentProject, setcurrentProject] = useState([]);
   const [showLoader, setshowLoader] = useState(false);
-  const getArchivedProjects = async () => {
+  const getCurrentProjects = async () => {
 
 
     setshowLoader(true);
     let currentUser = JSON.parse(localStorage.getItem("user-auth"))
     let currentUserDoc = JSON.parse(localStorage.getItem("currentuser"))
-    let archivedprojectInfo = [];
+    let projectInfo = []
+
 
     let bankData = await getCollectiondata(currentUserDoc.companyName)
     let usersData = await getCollectiondata(`${currentUserDoc.companyName}/${bankData[0].id}/Loan Officers/${currentUser.user.uid}/LOusers`)
     for (let index = 0; index < usersData.length; index++) {
       const user = usersData[index];
-      
+      projectInfo = [];
       let projectInfodata = await getCollectiondata(`${currentUserDoc.companyName}/${bankData[0].id}/Loan Officers/${currentUser.user.uid}/LOusers/${user.id}/Project Information`)
       for (let j = 0; j < projectInfodata.length; j++) {
         const project = projectInfodata[j];
@@ -34,53 +41,61 @@ const ArchiveProject = () => {
           let milestones = await getCollectiondata(url)
           for (let index = 0; index < milestones.length; index++) {
             const milestone = milestones[index];
-            if (!milestone.activerequest  && (!milestone.hasOwnProperty('isArchived') || !milestone.isArchived)) {
-              archivedprojectInfo.push({ totalloanamount:project.totalloanamount,"percentage": project.projectcomplete, "projectName": project.address, officerName: user.firstName + user.lastName , userId : user.id , bank:bankData[0].id });
+            if (!milestone.activerequest  && (milestone.hasOwnProperty('isArchived') && milestone.isArchived)) {
+              projectInfo.push({ totalloanamount:project.totalloanamount,"percentage": project.projectcomplete, "projectName": project.address, officerName: user.firstName + user.lastName , userId : user.id , bank:bankData[0].id });
               break;
+            }
+            else{
+              break
             }
           }
           
         }
       }
     }
-    setarchivedProject(archivedprojectInfo)
+    setcurrentProject(projectInfo)
     setshowLoader(false)
-
-
-
 
   }
 
-  return  (
+  return !selectedArchivedView ? (
     <>
-      <section className="archiveProject">
-        <div className="archiveProject-header header">
+      <section className="currentProject">
+        <div className="currentProject-header header">
           <h1 style={{ margin: "1rem 0" }}>Archived Project</h1>
         </div>
-        <div className="archiveProject-searchBar">
+        <div className="currentProject-searchBar">
           <div>
             <input type="text"></input>
             <i className="bx bx-search"></i>
           </div>
         </div>
-        <div className="archiveProject-tiles">
+        <div className="currentProject-tiles">
+
+
         {showLoader ? <div className="row textcenter">
             <h3><i>... Loding Archived Projects ...</i></h3>
           </div> : null}
 
-          {!showLoader && archivedProject.length == 0 ? <div className="row textcenter">
-            <h3><i> No Current Archived Found</i></h3>
+          {!showLoader && currentProject.length == 0 ? <div className="row textcenter">
+            <h3><i> No Archived Projects Found</i></h3>
           </div>:null}
-          {archivedProject.map((project, idx) => {
+          {currentProject.map((project, idx) => {
             return (
-              <div className="archiveProject-tile flex">
-                <div className="archiveProject-tile-ps tile-item">
-                  {project.percentage}
+              <div
+                className="currentProject-tile flex"
+                onClick={(event) => {
+                  setSelectedArchivedData(project);
+                  setSelectedArcivedView(true);
+                }}
+              >
+                <div className="currentProject-tile-ps tile-item">
+                  {project.percentage == "" ? 0 : project.percentage}
                 </div>
-                <div className="archiveProject-tile-name tile-item">
+                <div className="currentProject-tile-name tile-item">
                   {project.projectName}
                 </div>
-                <div className="archiveProject-tile-officerName tile-item">
+                <div className="currentProject-tile-officerName tile-item">
                   {project.officerName}
                 </div>
               </div>
@@ -94,7 +109,14 @@ const ArchiveProject = () => {
         </div>
       </section>
     </>
-  )
+  ) : (
+    <>
+      <SelectedArchievedProject
+        selectedArchivedData={selectedArchivedData}
+        setSelectedArcivedView={setSelectedArcivedView}
+      />
+    </>
+  );
 };
 
-export default ArchiveProject;
+export default ArchivedProject;
